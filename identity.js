@@ -27,11 +27,8 @@ var respecConfig = {
   // the start date here:
   // copyrightStart: "2005",
 
-  // if there is a previously published draft, uncomment this and set its YYYY-MM-DD
-  prevED: "https://w3c.github.io/webrtc-pc/archives/20171002/webrtc.html",
-
   // if there a publicly available Editor's Draft, this is the link
-  edDraftURI: "https://w3c.github.io/webrtc-pc/identity.html",
+  edDraftURI: "https://w3c.github.io/webrtc-identity/identity.html",
 
   // if this is a LCWD, uncomment and set the end of its review period
   // lcEnd: "2009-08-05",
@@ -80,7 +77,7 @@ var respecConfig = {
   // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
   // Team Contact.
   wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/47318/status",
-  issueBase: "https://github.com/w3c/webrtc-pc/issues/",
+  issueBase: "https://github.com/w3c/webrtc-identity/issues/",
   testSuiteURI: "https://github.com/web-platform-tests/wpt/tree/master/webrtc",
   otherLinks: [
     {
@@ -92,7 +89,7 @@ var respecConfig = {
         },
         {
           value: "Browse open issues",
-          href: "https://github.com/w3c/webrtc-pc/issues"
+          href: "https://github.com/w3c/webrtc-identity/issues"
         },
         {
           value: "IETF RTCWEB Working Group",
