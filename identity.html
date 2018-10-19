@@ -75,9 +75,8 @@
     are defined in [[!HIGHRES-TIME]].</p>
     <p>The terms <dfn>MediaStream</dfn>, <dfn>MediaStreamTrack</dfn>, and
     <dfn>MediaStreamConstraints</dfn> are defined in [[!GETUSERMEDIA]].
-    Note that <code><a>MediaStream</a></code> is extended in <code><a href="#mediastream-network-use">
-    the MediaStream section</a></code> in this document while <code><a>MediaStreamTrack</a></code>
-    is extended in <code><a href="#mediastreamtrack-network-use">
+    Note that <code><a>MediaStreamTrack</a></code>
+    is extended in <code><a href="#isolated-track">
     the MediaStreamTrack section</a></code> in this document.</p>
     <p>The term <dfn>Blob</dfn> is defined in [[!FILEAPI]].</p>
     <p>The term <dfn>media description</dfn> is defined in [[!RFC4566]].</p>
@@ -868,8 +867,8 @@ interface RTCIdentityProviderRegistrar {
               this allows them to generate an assertion that includes both
               local and remote identities. If this value is omitted, but a
               value is provided for the <code><a href=
-              "#dom-rtcconfiguration-peeridentity">peerIdentity</a></code>
-              member of <code><a>RTCConfiguration</a></code>, the value from
+              "https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-peeridentity">peerIdentity</a></code>
+              member of <code><a>RTCConfiguration</a></code> [[!WEBRTC]], the value from
               <code><a>RTCConfiguration</a></code> is used.</p>
             </dd>
           </dl>
@@ -1028,7 +1027,7 @@ interface RTCIdentityAssertion {
           <li>
             <p>A <code>MediaStreamTrack</code> from a stream acquired using the
             <var>peerIdentity</var> option can be transmitted if the
-            <code><a>RTCPeerConnection</a></code> has successfully <a href="#dfn-validate-the-identity">validated the identity</a> of the
+            <code><a>RTCPeerConnection</a></code> has successfully <a href="#sec.identity-verify-assertion">validated the identity</a> of the
             peer AND that identity is the same identity that was used in the
             <var>peerIdentity</var> option associated with the track. That is,
             the <code>name</code> attribute of the <code>peerIdentity</code>
@@ -1084,7 +1083,7 @@ interface RTCIdentityAssertion {
         the codecs that might be supported by the track, the bitrate, the
         number of packets, and the current settings that are set on the
         <code>MediaStreamTrack</code>.</p>
-        <p>In particular, the <a href="#sec.stats-model">statistics</a> that
+        <p>In particular, the <a href="https://www.w3.org/TR/webrtc/#sec.stats-model">statistics</a> [[!WEBRTC]] that
         <code><a>RTCPeerConnection</a></code> records are not reduced in
         capability. New statistics that might compromise isolation MUST be
         avoided, or explicitly suppressed for isolated streams.</p>
