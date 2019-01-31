@@ -1,7 +1,7 @@
 ## Identity for WebRTC 1.0
 
 * [Latest published editor's draft at github](https://w3c.github.io/webrtc-identity/identity.html)
-* [Latest W3C published version](http://www.w3.org/TR/webrtc-identity/) (TBD)
+* [Latest W3C published version](http://www.w3.org/TR/webrtc-identity/)
 
 ### Useful Links
 
