@@ -728,12 +728,13 @@ interface RTCIdentityProviderRegistrar {
       interface as described below.</p>
       <div>
         <pre class="idl">partial interface RTCPeerConnection {
-    void               setIdentityProvider (DOMString provider, optional RTCIdentityProviderOptions options);
+    void               setIdentityProvider (DOMString provider, optional RTCIdentityProviderOptions options = {});
     Promise&lt;DOMString&gt; getIdentityAssertion ();
     readonly        attribute Promise&lt;RTCIdentityAssertion&gt; peerIdentity;
     readonly        attribute DOMString?                    idpLoginUrl;
     readonly        attribute DOMString?                    idpErrorInfo;
-};</pre>
+};
+        </pre>
         <section>
           <h2>Attributes</h2>
           <dl data-link-for="RTCPeerConnection" data-dfn-for=
@@ -875,11 +876,13 @@ interface RTCIdentityProviderRegistrar {
         </section>
       </div>
       <div>
-        <pre class="idl">[Constructor(DOMString idp, DOMString name), Exposed=Window]
+        <pre class="idl">[Exposed=Window]
 interface RTCIdentityAssertion {
+    constructor(DOMString idp, DOMString name);
     attribute DOMString idp;
     attribute DOMString name;
-};</pre>
+};
+        </pre>
         <section>
           <h2><dfn>RTCIdentityAssertion</dfn> Attributes</h2>
           <dl data-link-for="RTCIdentityAssertion" data-dfn-for=
