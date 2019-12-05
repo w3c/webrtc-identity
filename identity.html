@@ -1170,14 +1170,11 @@ interface RTCIdentityAssertion {
         <h3><code><dfn>RTCErrorDetailTypeIdp</dfn></code> Enum</h3>
         <div>
           <pre class="idl"
->enum RTCErrorDetailTypeIdp {
-  "data-channel-failure",
-  "dtls-failure",
-  "fingerprint-failure",
-  "sctp-failure",
-  "sdp-syntax-error",
-  "hardware-encoder-not-available",
-  "hardware-encoder-error"
+>// This is an extension of RTCErrorDetailType from [[WEBRTC-PC]]
+// Unfortunately, WebIDL does not support partial enums (yet).
+//
+// partial enum RTCErrorDetailType {
+enum RTCErrorDetailTypeIdp {
   "idp-bad-script-failure",
   "idp-execution-failure",
   "idp-load-failure",
@@ -1188,12 +1185,11 @@ interface RTCIdentityAssertion {
   "idp-token-invalid",
 };</pre>
         </div>
-        <p>Only the error detail types whose names are prefixed with "idp-" are
-        defined by this specification. They are to be considered extensions of
+        <p>These enum values are extensions of
         the <a href="https://w3c.github.io/webrtc-pc/#dom-rtcerrordetailtype">
-        RTCErrorDetailType</a> enum. The rest are here because a WebIDL enum
-        must be described in one place only. This can be simplified should
-        partial enum support materialize.</p>
+        RTCErrorDetailType</a> enum. They are defined in this way because enums
+        in WebIDL can currently be described in one place only. This can be
+        simplified should partial enum support materialize in WebIDL.</p>
         <table data-link-for="RTCErrorDetailTypeIdp" data-dfn-for=
         "RTCErrorDetailTypeIdp" class="simple">
           <tbody>
