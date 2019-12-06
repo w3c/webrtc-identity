@@ -102,7 +102,6 @@
       are defined in [[!RFC6749]] Section 1.1.</p>
     <p>
       The terms <dfn data-lt="rtcpeerconnection">RTCPeerConnection</dfn>,
-      <dfn>target peer identity</dfn>,
       <dfn data-dfn-for="rtcpeerconnection">setRemoteDescription</dfn>,
       <dfn data-dfn-for="rtcpeerconnection">createOffer</dfn>,
       <dfn data-dfn-for="rtcpeerconnection">createAnswer</dfn>,
@@ -835,7 +834,34 @@ interface RTCIdentityProviderRegistrar {
           </dl>
         </section>
       </div>
-      <div>
+      <section>
+        <h4><dfn>RTCConfiguration</dfn> Dictionary Extensions</h4>
+        <p>This spec extends the <code>RTCConfiguration</code> dictionary with
+        the following parameter.</p>
+        <div>
+          <pre class="idl"
+>partial dictionary RTCConfiguration {
+  DOMString peerIdentity;
+};</pre>
+          <section>
+            <h2>Dictionary <a class="idlType">RTCConfiguration</a> Members</h2>
+            <dl data-link-for="RTCConfiguration" data-dfn-for=
+            "RTCConfiguration" class="dictionary-members">
+              <dt><dfn data-idl><code>peerIdentity</code></dfn> of type <span class=
+              "idlMemberType">DOMString</span></dt>
+              <dd>
+                <p>Sets the <a>target peer identity</a> for the
+                <a>RTCPeerConnection</a>. The <a>RTCPeerConnection</a> will not
+                establish a connection to a remote peer unless it can be
+                successfully authenticated with the provided name.</p>
+              </dd>
+            </dl>
+          </section>
+        </div>
+      </section>
+      <section>
+       <h4><dfn>RTCIdentityProviderOptions</dfn> Dictionary</h4>
+       <div>
         <pre class="idl">dictionary RTCIdentityProviderOptions {
     DOMString protocol = "default";
     DOMString usernameHint;
@@ -843,7 +869,7 @@ interface RTCIdentityProviderRegistrar {
 };
         </pre>
         <section>
-          <h2><dfn>RTCIdentityProviderOptions</dfn> Members</h2>
+          <h2>RTCIdentityProviderOptions Members</h2>
           <dl data-link-for="RTCIdentityProviderOptions" data-dfn-for=
           "RTCIdentityProviderOptions" class="attributes">
             <dt><dfn data-idl><code>protocol</code></dfn> of type <span class=
@@ -874,8 +900,11 @@ interface RTCIdentityProviderRegistrar {
             </dd>
           </dl>
         </section>
-      </div>
-      <div>
+       </div>
+      </section>
+      <section>
+       <h4><dfn>RTCIdentityAssertion</dfn> Interface</h4>
+       <div>
         <pre class="idl">[Exposed=Window]
 interface RTCIdentityAssertion {
     constructor(DOMString idp, DOMString name);
@@ -884,7 +913,7 @@ interface RTCIdentityAssertion {
 };
         </pre>
         <section>
-          <h2><dfn>RTCIdentityAssertion</dfn> Attributes</h2>
+          <h2>RTCIdentityAssertion Attributes</h2>
           <dl data-link-for="RTCIdentityAssertion" data-dfn-for=
           "RTCIdentityAssertion" class="attributes">
             <dt><dfn data-idl><code>idp</code></dfn> of type <span class=
@@ -902,7 +931,313 @@ interface RTCIdentityAssertion {
             </dd>
           </dl>
         </section>
+       </div>
+      </section>
+      <section>
+        <h4>Setting the RTCPeerConnection Configuration</h4>
+        <p>Whenever the <a href=
+        "https://www.w3.org/TR/webrtc/#set-pc-configuration">set a configuration</a>
+        algorithm is invoked, run the following steps instead:</p>
+        <ol>
+          <li><p>Let <var>configuration</var> be the
+          <code><a>RTCConfiguration</a></code> dictionary to be
+          processed.</p></li>
+          <li><p>If <code><var>configuration</var>.peerIdentity</code> is
+          set and its value differs from the <a>target peer
+          identity</a>, <a>throw</a> an <code>InvalidModificationError</code>.</p>
+          </li>
+          <li>
+            <p>Return the result of running the original <a href=
+            "https://www.w3.org/TR/webrtc/#set-pc-configuration">set a
+            configuration</a> algorithm.</p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h4>Creating an Offer</h4>
+        <p>Consider an <code>RTCPeerConnection</code>'s currently configured
+        identity provider (or lack of one) to be part of the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-offerer-s-system-state">
+        offerer's system state</a>.</p>
+        <p>Whenever the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-create-an-offer">create an offer</a>
+        algorithm is invoked, run the following steps instead:</p>
+        <ol>
+          <li>
+            <p>If <var>connection</var>'s
+            <a href="https://w3c.github.io/webrtc-pc/#dfn-signaling-state">
+            signaling state</a> is neither <code>"stable"</code> nor
+            <code>"have-local-offer"</code>, return a promise <a>rejected</a>
+            with a newly <a data-link-for="exception"
+            data-lt="create">created</a> <code>InvalidStateError</code>.</p>
+          </li>
+          <li>
+            <p>If <var>connection</var> is configured with an identity
+            provider, then begin <a href="#sec.identity-verify-assertion">
+            the identity assertion request process</a> if it has not already
+            begun.</p>
+          </li>
+          <li>
+            <p>Return the result of running the original <a href=
+              "https://w3c.github.io/webrtc-pc/#dfn-create-an-offer">create an
+              offer</a> algorithm.</p>
+          </li>
+        </ol>
+        <p>Whenever the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-in-parallel-steps-to-create-an-offer">
+        in-parallel steps to create an offer</a> algorithm is invoked, run the
+        following steps instead:</p>
+        <ol>
+          <li>
+            <p>If <var>connection</var> was not constructed with a set
+            of certificates, and one has not yet been generated, wait
+            for it to be generated.</p>
+          </li>
+          <li>
+            <p>Let <var>provider</var> be <var>connection</var>'s
+            currently configured identity provider if one has been
+            configured, or <code>null</code> otherwise.</p>
+          </li>
+          <li>
+            <p>If <var>provider</var> is non-null, wait for
+            <a href="#sec.identity-verify-assertion">the identity assertion
+            request process</a> to complete.</p>
+          </li>
+          <li>
+            <p>If <var>provider</var> was unable to produce an
+            identity assertion, <a>reject</a> <var>p</var> with a newly
+            <a data-link-for="exception" data-lt="create">created</a>
+            <code>NotReadableError</code> and abort these steps.</p>
+          </li>
+          <li>
+            <p>Return the result of running the original <a href=
+            "https://w3c.github.io/webrtc-pc/#dfn-in-parallel-steps-to-create-an-offer">
+            in-parallel steps to create an offer</a> algorithm.</p>
+          </li>
+        </ol>
+        <p>Whenever the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-final-steps-to-create-an-offer">
+        final steps to create an offer</a> algorithm is invoked, include the
+        identity assertion from <var>provider</var> (if non-null) when
+        generating the SDP offer <var>sdpString</var>, as described in
+        <span data-jsep="create-offer">[[!JSEP]]</span> (section 5.2.).</p>
+      </section>
+      <section>
+        <h4>Creating an Answer</h4>
+        <p>Consider an <code>RTCPeerConnection</code>'s currently configured
+        identity provider (or lack of one) to be part of the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-answerer-s-system-state">
+        answerer's system state</a>.</p>
+        <p>If the <code>RTCPeerConnection</code> is configured to
+        generate Identity assertions by calling <code>setIdentityProvider()</code>,
+        then the session description SHALL contain an appropriate assertion.</p>
+        <p>Whenever the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-create-an-answer">create an answer</a>
+        algorithm is invoked, run the following steps instead:</p>
+        <ol>
+          <li>
+            <p>If <var>connection</var>'s
+            <a href="https://w3c.github.io/webrtc-pc/#dfn-signaling-state">
+            signaling state</a> is neither <code>"have-remote-offer"</code> nor
+            <code>"have-local-pranswer"</code>, return a promise <a>rejected</a>
+            with a newly <a data-link-for="exception"
+            data-lt="create">created</a> <code>InvalidStateError</code>.</p>
+          </li>
+          <li>
+            <p>If <var>connection</var> is configured with an identity
+            provider, then begin <a href="#sec.identity-verify-assertion">
+            the identity assertion request process</a> if it has not already
+            begun.</p>
+          </li>
+          <li>
+            <p>Return the result of running the original <a href=
+              "https://w3c.github.io/webrtc-pc/#dfn-create-an-answer">create an
+              answer</a> algorithm.</p>
+          </li>
+        </ol>
+        <p>Whenever the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-in-parallel-steps-to-create-an-answer">
+        in-parallel steps to create an answer</a> algorithm is invoked, run the
+        following steps instead:</p>
+        <ol>
+          <li>
+            <p>If <var>connection</var> was not constructed with a set
+            of certificates, and one has not yet been generated, wait
+            for it to be generated.</p>
+          </li>
+          <li>
+            <p>Let <var>provider</var> be <var>connection</var>'s
+            currently configured identity provider if one has been
+            configured, or <code>null</code> otherwise.</p>
+          </li>
+          <li>
+            <p>If <var>provider</var> is non-null, wait for
+            <a href="#sec.identity-verify-assertion">the identity assertion
+            request process</a> to complete.</p>
+          </li>
+          <li>
+            <p>If <var>provider</var> was unable to produce an
+            identity assertion, <a>reject</a> <var>p</var> with a newly
+            <a data-link-for="exception" data-lt="create">created</a>
+            <code>NotReadableError</code> and abort these steps.</p>
+          </li>
+          <li>
+            <p>Return the result of running the original <a href=
+            "https://w3c.github.io/webrtc-pc/#dfn-in-parallel-steps-to-create-an-answer">
+            in-parallel steps to create an answer</a> algorithm.</p>
+          </li>
+        </ol>
+        <p>Whenever the <a href=
+        "https://w3c.github.io/webrtc-pc/#dfn-final-steps-to-create-an-answer">
+        final steps to create an answer</a> algorithm is invoked, include the
+        identity assertion from <var>provider</var> (if non-null) when
+        generating the SDP answer <var>sdpString</var>, as described in
+        <span data-jsep="create-answer">[[!JSEP]]</span> (section 5.3.).</p>
+      </section>
+      <section>
+        <h4>Setting a Remote Description</h4>
+        <p>Whenever the <a data-link-for=
+        "RTCPeerConnection">setRemoteDescription</a> method is called, in
+        addition to its regular steps, a remote description is processed to
+        determine and verify the identity of the peer.</p>
+        <p data-tests>If an <code>a=identity</code> attribute is present in the
+        session description, the browser <a href="#sec.identity-verify-assertion">
+        validates the identity assertion.</a>.</p>
+        <p>If the <a data-link-for="RTCConfiguration">peerIdentity</a> configuration is applied to the
+        <code><a>RTCPeerConnection</a></code>, this establishes a
+        <dfn id="target-peer-identity">target peer identity</dfn> of
+        the provided value. Alternatively, if the
+        <code><a>RTCPeerConnection</a></code> has previously
+        authenticated the identity of the peer (that is, the <code><a data-link-for=
+        "RTCPeerConnection">peerIdentity</a></code> promise is <a>resolved</a>), then this also
+        establishes a <a>target peer identity</a>.</p>
+        <p>The <a>target peer identity</a> cannot be changed once set.</p>
+        <p>If a <a>target peer identity</a> is set, then the <a href=
+        "#dfn-validate-the-identity">identity validation</a> MUST be completed before the
+        promise returned by <code><a>setRemoteDescription</a></code> is <a>resolved</a>,
+        and the promise returned by <code><a>setRemoteDescription</a></code>
+        MUST be <a>rejected</a> if
+        <a href="#dfn-validate-the-identity">identity validation</a> fails.</p>
+        <p>However, if there is no <a>target peer identity</a>, then
+        <code>setRemoteDescription</code> MUST NOT await the completion
+        of identity validation, and whether
+        <a href="#dfn-validate-the-identity">identity validation</a> fails
+        or not MUST NOT influence whether the promise returned by
+        <code><a>setRemoteDescription</a></code> is rejected.</p>
+      </section>
+    </section>
+    <section>
+      <h4>RTCError Interface Extensions</h4>
+      <div>
+        <pre class="idl"
+>partial interface RTCError {
+  readonly attribute long? httpRequestStatusCode;
+};</pre>
       </div>
+      <section>
+        <h2>Attributes</h2>
+        <dl data-link-for="RTCError" data-dfn-for="RTCError" class="attributes">
+          <dt data-tests="RTCError.html"><dfn data-idl><code>httpRequestStatusCode</code></dfn> of type
+          <span class="idlAttrType">long</span>, readonly,
+          nullable</dt>
+          <dd>
+            <p>If <code>errorDetail</code> is <code>"idp-load-failure"</code>
+            this is the HTTP status code of the IdP URI response.</p>
+          </dd>
+        </dl>
+      </section>
+      <h3><dfn>RTCErrorInit</dfn> Dictionary</h3>
+      <div>
+        <pre class="idl"
+>partial dictionary RTCErrorInit {
+  long httpRequestStatusCode;
+};</pre>
+        <p data-dfn-for="RTCErrorInit">The <dfn data-idl>httpRequestStatusCode</dfn> member of <code>RTCErrorInit</code> has the same definition as the attribute of the same name of <a>RTCError</a>.</p>
+      </div>
+      <section>
+        <h2>Dictionary <a>RTCError</a> Members</h2>
+        <dl data-link-for="RTCError" data-dfn-for="RTCError"
+        class="dictionary-members">
+          <dt><code>httpRequestStatusCode</code> of type
+          <span class="idlMemberType">long</span></dt>
+          <dd>
+            <p>See <code><a>RTCError</a></code>'s
+            <code>httpRequestStatusCode</code>.</p>
+          </dd>
+        </dl>
+      </section>
+      <section>
+        <h3><code><dfn>RTCErrorDetailTypeIdp</dfn></code> Enum</h3>
+        <div>
+          <pre class="idl"
+>// This is an extension of RTCErrorDetailType from [[WEBRTC-PC]]
+// Unfortunately, WebIDL does not support partial enums (yet).
+//
+// partial enum RTCErrorDetailType {
+enum RTCErrorDetailTypeIdp {
+  "idp-bad-script-failure",
+  "idp-execution-failure",
+  "idp-load-failure",
+  "idp-need-login",
+  "idp-timeout",
+  "idp-tls-failure",
+  "idp-token-expired",
+  "idp-token-invalid",
+};</pre>
+        </div>
+        <p>These enum values are extensions of
+        the <a href="https://w3c.github.io/webrtc-pc/#dom-rtcerrordetailtype">
+        RTCErrorDetailType</a> enum. They are defined in this way because enums
+        in WebIDL can currently be described in one place only. This can be
+        simplified should partial enum support materialize in WebIDL.</p>
+        <table data-link-for="RTCErrorDetailTypeIdp" data-dfn-for=
+        "RTCErrorDetailTypeIdp" class="simple">
+          <tbody>
+            <tr>
+              <th colspan="2">Enumeration description</th>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-bad-script-failure</code></dfn></td>
+              <td>The script loaded from the identity provider is not valid
+              JavaScript or did not implement the correct interfaces.</td>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-execution-failure</code></dfn></td>
+              <td>The identity provider has thrown an exception or
+              returned a <a>rejected</a> promise.</td>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-load-failure</code></dfn></td>
+              <td>Loading of the IdP URI has failed. The
+              <code>httpRequestStatusCode</code> attribute is
+              set to the HTTP status code of the response.</td>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-need-login</code></dfn></td>
+              <td>The identity provider requires the user to login. The
+              <code>idpLoginUrl</code> attribute is set to the URL that
+              can be used to login.</td>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-timeout</code></dfn></td>
+              <td>The IdP timer has expired.</td>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-tls-failure</code></dfn></td>
+              <td>The TLS certificate used for the IdP HTTPS connection
+              is not trusted.</td>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-token-expired</code></dfn></td>
+              <td>The IdP token has expired.</td>
+            </tr>
+            <tr>
+              <td><dfn data-idl><code>idp-token-invalid</code></dfn></td>
+              <td>The IdP token is invalid.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </section>
     <section>
     <h2>Media Stream API Extensions for Network Use</h2>
@@ -1140,6 +1475,54 @@ async function consumeIdentityAssertion() {
         </pre>
       </div>
     </section>
+    <section class="informative">
+      <h2>Event summary</h2>
+      <p>The following events fire on <code><a>MediaStreamTrack</a></code>
+      objects:</p>
+      <table>
+        <tbody>
+          <tr>
+            <th>Event name</th>
+            <th>Interface</th>
+            <th>Fired when...</th>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td><dfn id=
+            "event-isolationchange"><code>isolationchange</code></dfn></td>
+            <td><code><a>Event</a></code></td>
+            <td>A new <code><a>Event</a></code> is dispatched to the script when
+            the <var>isolated</var> attribute on a <code>MediaStreamTrack</code>
+            changes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  <section class="informative">
+    <h2>Privacy and Security Considerations</h2>
+    <p>This section is non-normative; it specifies no new behaviour, but
+    instead summarizes information already present in other parts of the
+    specification. The overall security considerations of the general set of
+    APIs and protocols used in WebRTC Identity are described in
+    [[RTCWEB-SECURITY-ARCH]].</p>
+    <section>
+      <h2>Impact on same origin policy</h2>
+      <p>The <code><a>peerIdentity</a></code> mechanism loads and executes
+      JavaScript code from a third-party server acting as an identity provider.
+      That code is executed in a separate JavaScript realm and does not affect
+      the protections afforded by the same origin policy.</p>
+    </section>
+    <section>
+      <h2>Confidentiality of Communications</h2>
+      <p>The fact that communication is taking place cannot be hidden from
+      adversaries that can observe the network, so this has to be regarded as
+      public information.</p>
+      <p>A mechanism, <code><a>peerIdentity</a></code>, is provided that gives
+      Javascript the option of requesting media that the same javascript cannot
+      access, but can only be sent to certain other entities.</p>
+    </section>
+  </section>
   <section>
     <h2>Change Log</h2>
     <p>This section will be removed before publication.</p>
