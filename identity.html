@@ -218,8 +218,9 @@ interface RTCIdentityProviderGlobalScope : WorkerGlobalScope {
       <div>
         <pre class="idl">[Exposed=RTCIdentityProviderGlobalScope]
 interface RTCIdentityProviderRegistrar {
-    void register (RTCIdentityProvider idp);
-};</pre>
+    undefined register (RTCIdentityProvider idp);
+};
+        </pre>
         <section>
           <h2>Methods</h2>
           <dl data-link-for="RTCIdentityProviderRegistrar" data-dfn-for=
@@ -727,7 +728,7 @@ interface RTCIdentityProviderRegistrar {
       interface as described below.</p>
       <div>
         <pre class="idl">partial interface RTCPeerConnection {
-    void               setIdentityProvider (DOMString provider, optional RTCIdentityProviderOptions options = {});
+    undefined               setIdentityProvider (DOMString provider, optional RTCIdentityProviderOptions options = {});
     Promise&lt;DOMString&gt; getIdentityAssertion ();
     readonly        attribute Promise&lt;RTCIdentityAssertion&gt; peerIdentity;
     readonly        attribute DOMString?                    idpLoginUrl;
