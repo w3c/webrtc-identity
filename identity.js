@@ -28,7 +28,7 @@ var respecConfig = {
   // copyrightStart: "2005",
 
   // if there a publicly available Editor's Draft, this is the link
-  edDraftURI: "https://w3c.github.io/webrtc-identity/identity.html",
+  edDraftURI: "https://w3c.github.io/webrtc-identity/",
 
   // if this is a LCWD, uncomment and set the end of its review period
   // lcEnd: "2009-08-05",
