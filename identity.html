@@ -126,7 +126,7 @@
         <var>rtcIdentityProvider</var> in the global scope of the <a>realm</a>.
         This object is used by the IdP to interact with the user agent.</p>
         <div>
-          <pre class="idl">[Global, Exposed=RTCIdentityProviderGlobalScope]
+          <pre class="idl">[Global=(Worker,RTCIdentityProvider), Exposed=RTCIdentityProvider]
 interface RTCIdentityProviderGlobalScope : WorkerGlobalScope {
     readonly        attribute RTCIdentityProviderRegistrar rtcIdentityProvider;
 };</pre>
@@ -177,7 +177,7 @@ interface RTCIdentityProviderGlobalScope : WorkerGlobalScope {
       user agent cannot use the IdP proxy and MUST fail any future attempt to
       interact with the IdP.</p>
       <div>
-        <pre class="idl">[Exposed=RTCIdentityProviderGlobalScope]
+        <pre class="idl">[Exposed=RTCIdentityProvider]
 interface RTCIdentityProviderRegistrar {
     undefined register (RTCIdentityProvider idp);
 };
