@@ -54,7 +54,7 @@
     easy to follow, and not intended to be performant.)</p>
     <p>Implementations that use ECMAScript to implement the APIs defined in
     this specification MUST implement them in a manner consistent with the
-    ECMAScript Bindings defined in the Web IDL specification [[!WEBIDL-1]], as
+    ECMAScript Bindings defined in the Web IDL specification [[!WEBIDL]], as
     this specification uses that specification and terminology.</p>
   </section>
   <section>
@@ -1127,47 +1127,49 @@ enum RTCErrorDetailTypeIdp {
         simplified should partial enum support materialize in WebIDL.</p>
         <table data-link-for="RTCErrorDetailTypeIdp" data-dfn-for=
         "RTCErrorDetailTypeIdp" class="simple">
-          <tbody>
+          <thead>
             <tr>
-              <th colspan="2">Enumeration description</th>
+              <th colspan="2">RTCErrorDetailTypeIdp Enumeration description</th>
             </tr>
+	  </thead>
+	  <tbody>
             <tr>
-              <td><dfn data-idl><code>idp-bad-script-failure</code></dfn></td>
+              <th scope=row><dfn><code>idp-bad-script-failure</code></dfn></th>
               <td>The script loaded from the identity provider is not valid
               JavaScript or did not implement the correct interfaces.</td>
             </tr>
             <tr>
-              <td><dfn data-idl><code>idp-execution-failure</code></dfn></td>
+              <th scope=row><dfn><code>idp-execution-failure</code></dfn></th>
               <td>The identity provider has thrown an exception or
               returned a [= reject | rejected =] promise.</td>
             </tr>
             <tr>
-              <td><dfn data-idl><code>idp-load-failure</code></dfn></td>
+              <th scope=row><dfn><code>idp-load-failure</code></dfn></th>
               <td>Loading of the IdP URI has failed. The
               <code>httpRequestStatusCode</code> attribute is
               set to the HTTP status code of the response.</td>
             </tr>
             <tr>
-              <td><dfn data-idl><code>idp-need-login</code></dfn></td>
+              <th scope=row><dfn><code>idp-need-login</code></dfn></th>
               <td>The identity provider requires the user to login. The
               <code>idpLoginUrl</code> attribute is set to the URL that
               can be used to login.</td>
             </tr>
             <tr>
-              <td><dfn data-idl><code>idp-timeout</code></dfn></td>
+              <th scope=row><dfn><code>idp-timeout</code></dfn></th>
               <td>The IdP timer has expired.</td>
             </tr>
             <tr>
-              <td><dfn data-idl><code>idp-tls-failure</code></dfn></td>
+              <th scope=row><dfn><code>idp-tls-failure</code></dfn></th>
               <td>The TLS certificate used for the IdP HTTPS connection
               is not trusted.</td>
             </tr>
             <tr>
-              <td><dfn data-idl><code>idp-token-expired</code></dfn></td>
+              <th scope=row><dfn><code>idp-token-expired</code></dfn></th>
               <td>The IdP token has expired.</td>
             </tr>
             <tr>
-              <td><dfn data-idl><code>idp-token-invalid</code></dfn></td>
+              <th scope=row><dfn><code>idp-token-invalid</code></dfn></th>
               <td>The IdP token is invalid.</td>
             </tr>
           </tbody>
@@ -1412,16 +1414,16 @@ async function consumeIdentityAssertion() {
       <p>The following events fire on {{MediaStreamTrack}}
       objects:</p>
       <table>
-        <tbody>
+        <thead>
           <tr>
             <th>Event name</th>
             <th>Interface</th>
             <th>Fired when...</th>
           </tr>
-        </tbody>
+        </thead>
         <tbody>
           <tr>
-            <td><dfn id=
+            <th scope=row><dfn data-dfn-type=event data-dfn-for=MediaStreamTrack id=
             "event-isolationchange"><code>isolationchange</code></dfn></td>
             <td>{{Event}}</td>
             <td>A new <code><a>Event</a></code> is dispatched to the script when
