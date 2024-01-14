@@ -11,7 +11,8 @@ var respecConfig = {
   // subtitle   :  "an excellent document",
 
   // if you wish the publication date to be other than today, set this
-  // publishDate:  "2014-01-27",
+  // Date of last non-editorial change https://github.com/w3c/webrtc-identity/pull/30
+  publishDate:  "2019-12-06",
 
 
   // if the specification's copyright date is a range of years, specify

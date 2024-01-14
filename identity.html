@@ -833,10 +833,9 @@ interface RTCIdentityProviderRegistrar {
               their assertions to a particular pair of communication peers,
               this allows them to generate an assertion that includes both
               local and remote identities. If this value is omitted, but a
-              value is provided for the <code><a href=
-              "https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-peeridentity">peerIdentity</a></code>
-              member of <code><a>RTCConfiguration</a></code> [[!WEBRTC]], the value from
-              <code><a>RTCConfiguration</a></code> is used.</p>
+              value is provided for the {{RTCConfiguration/peerIdentity}}
+              member of {{RTCConfiguration}} [[!WEBRTC]], the value from
+              {{RTCConfiguration}} is used.</p>
             </dd>
           </dl>
         </section>
@@ -878,7 +877,7 @@ interface RTCIdentityAssertion {
         algorithm is invoked, run the following steps instead:</p>
         <ol>
           <li><p>Let <var>configuration</var> be the
-          <code><a>RTCConfiguration</a></code> dictionary to be
+          {{RTCConfiguration}} dictionary to be
           processed.</p></li>
           <li><p>If <code><var>configuration</var>.peerIdentity</code> is
           set and its value differs from the <a>target peer
@@ -897,8 +896,7 @@ interface RTCIdentityAssertion {
         identity provider (or lack of one) to be part of the <a href=
         "https://w3c.github.io/webrtc-pc/#dfn-offerer-s-system-state">
         offerer's system state</a>.</p>
-        <p>Whenever the <a href=
-        "https://w3c.github.io/webrtc-pc/#dfn-create-an-offer">create an offer</a>
+        <p>Whenever the [=create an offer=]
         algorithm is invoked, run the following steps instead:</p>
         <ol>
           <li>
@@ -915,14 +913,11 @@ interface RTCIdentityAssertion {
             begun.</p>
           </li>
           <li>
-            <p>Return the result of running the original <a href=
-              "https://w3c.github.io/webrtc-pc/#dfn-create-an-offer">create an
-              offer</a> algorithm.</p>
+            <p>Return the result of running the original [=create an
+              offer=] algorithm.</p>
           </li>
         </ol>
-        <p>Whenever the <a href=
-        "https://w3c.github.io/webrtc-pc/#dfn-in-parallel-steps-to-create-an-offer">
-        in-parallel steps to create an offer</a> algorithm is invoked, run the
+        <p>Whenever the [=in-parallel steps to create an offer=] algorithm is invoked, run the
         following steps instead:</p>
         <ol>
           <li>
@@ -952,9 +947,7 @@ interface RTCIdentityAssertion {
             in-parallel steps to create an offer</a> algorithm.</p>
           </li>
         </ol>
-        <p>Whenever the <a href=
-        "https://w3c.github.io/webrtc-pc/#dfn-final-steps-to-create-an-offer">
-        final steps to create an offer</a> algorithm is invoked, include the
+        <p>Whenever the [=final steps to create an offer=] algorithm is invoked, include the
         identity assertion from <var>provider</var> (if non-null) when
         generating the SDP offer <var>sdpString</var>, as described in
         <span data-jsep="create-offer">[[!JSEP]]</span> (section 5.2.).</p>
@@ -968,8 +961,7 @@ interface RTCIdentityAssertion {
         <p>If the <code>RTCPeerConnection</code> is configured to
         generate Identity assertions by calling <code>setIdentityProvider()</code>,
         then the session description SHALL contain an appropriate assertion.</p>
-        <p>Whenever the <a href=
-        "https://w3c.github.io/webrtc-pc/#dfn-create-an-answer">create an answer</a>
+        <p>Whenever the [=create an answer=]
         algorithm is invoked, run the following steps instead:</p>
         <ol>
           <li>
@@ -986,14 +978,11 @@ interface RTCIdentityAssertion {
             begun.</p>
           </li>
           <li>
-            <p>Return the result of running the original <a href=
-              "https://w3c.github.io/webrtc-pc/#dfn-create-an-answer">create an
-              answer</a> algorithm.</p>
+            <p>Return the result of running the original [=create an
+              answer=] algorithm.</p>
           </li>
         </ol>
-        <p>Whenever the <a href=
-        "https://w3c.github.io/webrtc-pc/#dfn-in-parallel-steps-to-create-an-answer">
-        in-parallel steps to create an answer</a> algorithm is invoked, run the
+        <p>Whenever the [=in-parallel steps to create an answer=] algorithm is invoked, run the
         following steps instead:</p>
         <ol>
           <li>
@@ -1023,9 +1012,8 @@ interface RTCIdentityAssertion {
             in-parallel steps to create an answer</a> algorithm.</p>
           </li>
         </ol>
-        <p>Whenever the <a href=
-        "https://w3c.github.io/webrtc-pc/#dfn-final-steps-to-create-an-answer">
-        final steps to create an answer</a> algorithm is invoked, include the
+        <p>Whenever the [=
+        final steps to create an answer=] algorithm is invoked, include the
         identity assertion from <var>provider</var> (if non-null) when
         generating the SDP answer <var>sdpString</var>, as described in
         <span data-jsep="create-answer">[[!JSEP]]</span> (section 5.3.).</p>
