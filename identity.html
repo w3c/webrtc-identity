@@ -239,7 +239,7 @@ interface RTCIdentityProviderRegistrar {
         <div>
           <pre class="idl">
           callback GenerateAssertionCallback = Promise&lt;RTCIdentityAssertionResult&gt;
-          (DOMString contents, DOMString origin, RTCIdentityProviderOptions options);
+          (DOMString contents, DOMString origin, optional RTCIdentityProviderOptions options = {});
           </pre>
           <section>
             <h2>Callback <dfn>GenerateAssertionCallback</dfn>
